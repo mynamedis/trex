@@ -5,14 +5,14 @@ var gameState = PLAY;
 var trex, trex_running, trex_collided;
 var ground, invisibleGround, groundImage;
 
-var cloudsGroup, cloudImage;
+var cloudsGroup, cloudImage, cloud;
 var obstaclesGroup, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6;
 
 var score=0;
 
-var gameOver, restart;
+var gameOver, gameOverImg;
+var restart, restartImg;
 
-localStorage["HighestScore"] = 0;
 
 function preload(){
   trex_running =   loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -48,10 +48,10 @@ function setup() {
   ground.velocityX = -(6 + 3*score/100);
   
   gameOver = createSprite(300,100);
-  gameOver.addImage(gameOverImg);
+  gameOver.addImage("go",gameOverImg);
   
   restart = createSprite(300,140);
-  restart.addImage(restartImg);
+  restart.addImage("res",restartImg);
   
   gameOver.scale = 0.5;
   restart.scale = 0.5;
@@ -126,7 +126,7 @@ function spawnClouds() {
   if (frameCount % 60 === 0) {
     var cloud = createSprite(600,120,40,10);
     cloud.y = Math.round(random(80,120));
-    cloud.addImage(cloudImage);
+    cloud.addImage("ci",cloudImage);
     cloud.scale = 0.5;
     cloud.velocityX = -3;
     
@@ -152,17 +152,17 @@ function spawnObstacles() {
     //generate random obstacles
     var rand = Math.round(random(1,6));
     switch(rand) {
-      case 1: obstacle.addImage(obstacle1);
+      case 1: obstacle.addImage("1o",obstacle1);
               break;
-      case 2: obstacle.addImage(obstacle2);
+      case 2: obstacle.addImage("2o",obstacle2);
               break;
-      case 3: obstacle.addImage(obstacle3);
+      case 3: obstacle.addImage("3o",obstacle3);
               break;
-      case 4: obstacle.addImage(obstacle4);
+      case 4: obstacle.addImage("4o",obstacle4);
               break;
-      case 5: obstacle.addImage(obstacle5);
+      case 5: obstacle.addImage("5o",obstacle5);
               break;
-      case 6: obstacle.addImage(obstacle6);
+      case 6: obstacle.addImage("6o",obstacle6);
               break;
       default: break;
     }
@@ -184,11 +184,6 @@ function reset(){
   cloudsGroup.destroyEach();
   
   trex.changeAnimation("running",trex_running);
-  
-  if(localStorage["HighestScore"]<score){
-    localStorage["HighestScore"] = score;
-  }
-  console.log(localStorage["HighestScore"]);
   
   score = 0;
   
